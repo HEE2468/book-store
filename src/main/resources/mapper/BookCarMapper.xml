@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sww.bank_book.car.dao.BookCarDao">
+
+
+    <!-- 查找用户在购物车中的书籍 -->
+    <select id="findBookCarById" resultType="com.sww.bank_book.car.entity.BookCar">
+        SELECT
+        bookCar.book_car_id AS bookCarId,
+        bookCar.user_id AS userId,
+        bookCar.number,
+        bookCar.book_details_id AS bookDetailsId,
+        bookDetails.book_name AS bookName,
+        bookDetails.price,
+        bookDetails.image
+        FROM book_car AS bookCar
+        LEFT JOIN book_details AS bookDetails ON bookDetails.book_details_id = bookCar.book_details_id
+        WHERE bookCar.user_id = #{userId} AND bookCar.has_order = 0
+    </select>
+
+    <!-- 修改 -->
+    <update id="updateCarInfos" parameterType="com.sww.bank_book.car.entity.BookCar">
+        UPDATE book_car SET
+        <trim suffixOverrides=",">
+            <if test="bookCarId != null">book_car_id = #{bookCarId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="bookDetailsId != null">book_details_id = #{bookDetailsId},</if>
+            <if test="number != null">number = #{number},</if>
+            <if test="hasOrder != null">has_order = #{hasOrder},</if>
+        </trim>
+        <if test="bookDetailsId != null">
+          WHERE book_details_id = #{bookDetailsId}
+        </if>
+    </update>
+
+    <!--计算购物车中的数量-->
+    <select id="countUserCar" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM book_car WHERE user_id = #{userId} AND has_order = 0
+    </select>
+
+    <resultMap id="CarMap" type="com.sww.bank_book.car.entity.BookCar">
+        <id property="bookCarId" column="book_car_id"/>
+        <result property="userId" column="userId"/>
+        <result property="bookDetailsId" column="book_details_id"/>
+        <result property="number" column="number"/>
+        <result property="hasOrder" column="has_order"/>
+    </resultMap>
+
+    <select id="queryBookDetailsForCar" resultMap="CarMap">
+        SELECT * FROM book_car WHERE book_car_id = #{bookCarId}
+    </select>
+
+    <!-- 修改 -->
+    <update id="updateBookDetailsForCar" parameterType="com.sww.bank_book.car.entity.BookCar">
+        UPDATE book_car SET
+        <trim suffixOverrides=",">
+            <if test="number != null">number = #{number},</if>
+        </trim>
+        <if test="bookCarId != null">
+            WHERE book_car_id = #{bookCarId}
+        </if>
+    </update>
+
+    <!--删除-->
+    <delete id="deleteBookDetailsForCar" parameterType="java.lang.String">
+        DELETE FROM book_car WHERE book_car_id = #{bookCarId}
+    </delete>
+
+    <!--查找书籍在购物车中是否已存在-->
+    <select id="findBookIsExit" resultMap="CarMap">
+        SELECT * FROM book_car WHERE user_id = #{userId} AND book_details_id = #{bookDetailsId} AND has_order = 0
+    </select>
+
+    <!--加入购物车-->
+    <insert id="insertBuyBook" parameterType="com.sww.bank_book.car.entity.BookCar">
+        INSERT INTO book_car(
+            <trim suffixOverrides=",">
+                book_car_id,
+                user_id,
+                book_details_id,
+                number,
+                has_order,
+            </trim>
+        )VALUES(
+        <trim suffixOverrides=",">
+          #{bookCarId},
+          #{userId},
+          #{bookDetailsId},
+          #{number},
+          #{hasOrder},
+        </trim>
+        )
+    </insert>
+</mapper>

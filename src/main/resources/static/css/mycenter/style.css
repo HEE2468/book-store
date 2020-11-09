@@ -1,0 +1,164 @@
+/*.box{
+    position: relative;
+    height: 80px;
+    width: 100%;
+    z-index: 999;
+}
+.box-active{
+    position: fixed;
+    top: 0;
+}*/
+body{
+    background-color: #F9F9F9;
+}
+.site-header{
+    top:30px;
+    background-color: #ffffff;
+    width: 100%;
+    height: 80px;
+}
+.header-logo{
+    position: relative;
+    top:10px;
+    float:left;
+    left:8%;
+}
+.nav-list{
+    position: relative;
+    float:left;
+    top: 25px;
+    left:8%;
+    width: 80%;
+    font-size: 20px;
+}
+.li-item-center{
+    position: relative;
+    float:left;
+    left:2%;
+    color: #7F7F7F;
+}
+.li-item-logout{
+    position: relative;
+    float:left;
+    left:80%;
+    color: #7F7F7F;
+}
+
+.site-out-box{
+    position: relative;
+    top:23px;
+    left:15%;
+    width: 1150px;
+    height: 1000px;
+    background-color: #FCFCFC;
+    border:1px solid #E4E4E4;
+}
+
+.site-in-box{
+    position: relative;
+    left:13%;
+    width: 850px;
+    height: 1000px;
+    background-color: #ffffff;
+    border:1px solid #E4E4E4;
+}
+
+/*基本信息管理*/
+.layui-upload.message-photo{
+    margin-left: 380px;
+}
+.layui-btn.photo-btn{
+    background-color: #ffffff;
+    color: #00aff0;
+}
+.layui-btn.photo-btn:hover{
+    color: #00aff0;
+}
+.base-infos{
+    position: relative;
+    top:25px;
+    width: 850px;
+    height: 380px;
+}
+
+.base-infos-text{
+    text-align: center;
+    color: #7F7F7F;
+    font-size: 25px
+}
+.base-infos-list{
+    position: relative;
+    top:30px;
+    width: 850px;
+    font-size: 13px;
+}
+.layui-form-item.message-box{
+    margin-left: 150px;
+}
+.layui-input.message-use{
+    width: 400px;
+}
+
+/*密码管理*/
+.base-infos-password{
+    width: 850px;
+    height: 240px;
+}
+.infos-password-text{
+    text-align: center;
+    color: #7F7F7F;
+    font-size: 25px
+}
+.infos-password-list{
+    position: relative;
+    top:30px;
+    width: 850px;
+    font-size: 13px;
+}
+
+/*地址管理*/
+.address-manager{
+    width: 850px;
+    height: 230px;
+}
+.address-manager-text{
+    text-align: center;
+    color: #7F7F7F;
+    font-size: 25px
+}
+.address-list{
+    position: relative;
+    top:30px;
+    width: 850px;
+    font-size: 13px;
+}
+.submit-btns{
+    margin-left: 380px;
+}
+
+/*
+footer*/
+.bg-footer{
+    position: relative;
+    background-color: #F9F9F9;
+    width: 100%;
+    height: 100px;
+}
+.footer-container{
+    position: relative;
+    top: 30px;
+    text-align: center;
+    font-size: 12px;
+}
+
+.footer-font-one{
+    color:#D7D7D7;
+}
+
+.footer-font-two{
+    color:#D7D7D7
+}
+
+.footer-font-three{
+    color:#D7D7D7
+}

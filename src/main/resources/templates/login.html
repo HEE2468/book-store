@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link href="css/login/style.css" type="text/css" rel="stylesheet"/>
+    <link href="layui/css/layui.css" type="text/css" rel="stylesheet"/>
+    <script src="js/jquery/jquery-1.7.1.min.js"></script>
+    <script src="layui/layui.js" type="text/javascript"></script>
+</head>
+<body>
+
+    <!-- 登录与注册的中间页面 -->
+    <div class="container">
+        <label class="container-title">信书汇</label>
+        <div class="container-content">
+            <form class="form-login" action="">
+                <label id="nameAndPasswordError" style="color:red;font-size: 14px;display: none"></label>
+                <div class="div-username">
+                    <input id="username" type="text" class="input-username" name="username" placeholder="请输入用户名"/>
+                </div>
+                <label id="username-tip" style="color:red;font-size: 12px;display: none" ></label>
+                <div class="div-password">
+                    <input id="password" type="password" class="input-password" name="password" placeholder="请输入密码"/>
+                </div>
+                <label id="password-tip" style="color:red;font-size: 12px;display: none"></label>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block-login">
+                        <button id="login-enter" type="button" class="layui-btn oy-btn-red" lay-submit="" lay-filter="demo1">登录</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- 写底部 -->
+    <div id="footer" class="bg-footer">
+        <div class="footer-container">
+            <a class="footer-font-one">中信银行股份有限公司版权所有 Copyright © CITIC Bank All rights reserved</a><br/>
+            <a class="footer-font-two">京公网安备11010502020433号 京ICP备16038101号</a><br/>
+            <a class="footer-font-three">本网站支持IPV6访问</a>
+        </div>
+    </div>
+</body>
+
+<script>
+    $(document).ready(function () {
+
+        // 用户名不能为空
+        $("#username").bind('input propertychange',function(event){
+            var username=$("#username").val().trim();
+            if(username==""||username.length<=0){
+                $("#username-tip").text("用户名不能为空").show();
+            }else{
+                $("#username-tip").css("display","none");
+                $("#nameAndPasswordError").css("display","none");
+            }
+        });
+
+        // 密码不能为空
+        $("#password").bind('input propertychange',function(event){
+            var password=$("#password").val();
+            if(password==""||password.length<=0){
+                $("#password-tip").text("密码不能为空").show();
+            }else{
+                $("#password-tip").css("display","none");
+                $("#nameAndPasswordError").css("display","none");
+            }
+        });
+
+        $("#login-enter").on("click", function () {
+            $.ajax({
+                type:"post",
+                url:"user/login",
+                data : {
+                    username : $("#username").val(),
+                    password : $("#password").val()
+                },
+                datatype: "json",
+                error: function(){
+                    //请求出错处理
+                    alert("出错了，请与管理员联系");
+                },
+                success:function(result){
+                    if (result.msg === "FAIL") {
+                        // 登录失败，请检查输入信息
+                        $("#nameAndPasswordError").text("用户名或密码错误,请重新输入!").show();
+                        window.sessionStorage.setItem("userName", null);
+
+                    } else {
+                        window.sessionStorage.setItem("userName", $("#username").val());
+                        window.sessionStorage.setItem("userId", result.data.id);
+                        //alert("userId: "+ result.data.id);
+                        window.location.href = 'index.html'
+                    }
+                }
+            });
+        });
+    });
+</script>
+</html>

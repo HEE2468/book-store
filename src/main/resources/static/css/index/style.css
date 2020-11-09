@@ -1,0 +1,384 @@
+
+.site-topbar-v{
+  /*  position: fixed;*/
+    top:0px;
+    background-color: #464C5B;
+    width: 100%;
+    height: 30px;
+}
+
+.container-topbar-title-v{
+    position: relative;
+    float: left;
+    top:5px;
+    left:10%;
+}
+
+.container-topbar-userInfo{
+    position: relative;
+    float: left;
+    top:5px;
+    left:59%;
+}
+
+.userInfo-and{
+    position: absolute;
+    width: 150px;
+    top:5px;
+    left:52px;
+    margin-top: -2px;
+}
+
+
+.container-topbar-buttons{
+    position: relative;
+    float:left;
+    top:5px;
+    left:66%;
+}
+
+.userInfo-and.userInfo-has-login ul{
+    margin-top: 73px;
+    width: 114px;
+}
+
+
+.show_list{
+    position: relative;
+}
+.show_list .move_list{
+    display: none;
+    z-index: 103;
+    position: absolute;
+    top: -56px;
+    left: 0;
+    margin-left: -60px;
+    width: 100%;
+    background: #333;
+    text-align: center;
+}
+.show_list .move_list li{
+    padding: 10px 0;
+    width: 114px;
+    color: #fff;
+}
+.userInfo-and.userInfo-has-login ul a .show_list{
+    padding-bottom: 20px;
+    border-right: none;
+}
+.show_list:hover .move_list{
+    display: block;
+}
+.userInfo-and.userInfo-has-login ul a:nth-child(3){
+    border-left: 1px solid #000;
+}
+.show_list .move_list li:hover{
+    color: black;
+    width: 114px;
+    background: #F2F2F2;
+}
+
+
+.container-topbar-messages{
+    position: relative;
+    float:left;
+    top:5px;
+    left:67%;
+}
+
+.container-topbar-car{
+    position: relative;
+    float:left;
+    top:5px;
+    left:68%;
+}
+
+
+/*导航*/
+.site-header{
+    top:30px;
+    background-color: #ffffff;
+    width: 100%;
+    height: 10px;
+}
+
+.header-logo{
+    position: relative;
+    float:left;
+    top:5px;
+    left:10%;
+    width: 180px;
+    height: 60px;
+}
+
+.header-nav-v{
+    position: relative;
+    float:left;
+    left:9%;
+    font-size: 20px;
+}
+.li-item-index{
+    position: relative;
+    margin-top: 20px;
+    float:left;
+    left:8%;
+}
+.li-item-all{
+    position: relative;
+    float:left;
+    margin-top: 20px;
+    left:11%;
+}
+.li-item-new{
+    position: relative;
+    float:left;
+    margin-top: 20px;
+    left:14%;
+}
+.li-item-hot{
+    position: relative;
+    float:left;
+    margin-top: 20px;
+    left:17%;
+}
+.li-item-good{
+    position: relative;
+    float:left;
+    margin-top: 20px;
+    left:20%;
+}
+.li-item-about{
+    position: relative;
+    float:left;
+    margin-top: 20px;
+    left:23%;
+}
+.li-item-admin{
+    position: relative;
+    float:left;
+    margin-top: 20px;
+    left:26%;
+}
+.header-search{
+    position: relative;
+    margin-top: 20px;
+   /* margin: 100px auto;*/
+    float:left;
+    left:26%;
+    /*border: 1px solid red;*/
+}
+.header-search input{
+    float: left;
+    height: 35px;
+    outline: none;
+    border: 1px solid red;
+    box-sizing: border-box;
+    padding-left: 10px;
+}
+.header-search button{
+    float: right;
+    width: 50px;
+    height: 35px;
+    background-color: red;
+    color: white;
+    border-style: none;
+    outline: none;
+}
+.header-search button i{
+    font-style: normal;
+}
+.header-search button:hover{
+    font-size: 16px;
+}
+
+/*轮播图*/
+.site-carousel{
+    position: relative;
+    float:left;
+    width: 90%;
+    height: 440px;
+    left:10%;
+    margin-top: 5px;
+}
+
+/*书品栈*/
+.sit-books{
+    position: relative;
+    float:left;
+    width: 100%;
+    height: 330px;
+}
+
+.site-books-title{
+    position:relative;
+    margin-top: 110px;
+    color: #7F7F7F;
+    font-size: 28px;
+    font-weight: bold;
+    left:50%;
+}
+
+.site-books-category{
+    position:relative;
+    margin-top: 60px;
+}
+
+.col-my-1{
+    position: relative;
+    float:left;
+    left:10%;
+    padding-left: 40px;
+
+}
+.img{
+    width: 90px;
+    height: 90px;
+}
+
+/*
+优品汇
+*/
+.sit-books-good{
+    position: relative;
+    float:left;
+    width: 100%;
+    height: 650px;
+    background-color: #F8F8F8;
+}
+
+.sit-books-good-title{
+    position:relative;
+    margin-top: 40px;
+    color: #7F7F7F;
+    font-size: 28px;
+    font-weight: bold;
+    left:50%;
+}
+
+.books-good-images{
+    margin-top: 60px;
+}
+.books-good-images-1{
+    position: relative;
+    float:left;
+    left:8%;
+}
+.books-good-images-2{
+    position: relative;
+    float:left;
+    left:8%;
+}
+.books-good-images-3{
+    position: relative;
+    float:left;
+    left:8%;
+}
+.books-good-images-4{
+    position: relative;
+    float:left;
+    left:8%;
+}
+.books-good-images-5{
+     position: relative;
+     float:left;
+     left:8%;
+ }
+.books-good-images-6{
+    position: relative;
+    float:left;
+    left:8%;
+    width: 403px;
+    height: 261px;
+    background-image: url("../../images/index/u221.svg");
+    opacity: 50%;
+}
+.six-img{
+    text-align: center;
+}
+
+/*最新专区*/
+.sit-books-new{
+    position: relative;
+    float:left;
+    width: 100%;
+    height: 500px;
+    background-color: #F8F8F8;
+}
+.sit-books-new-title{
+    position:relative;
+    margin-top: 40px;
+    color: #7F7F7F;
+    font-size: 28px;
+    font-weight: bold;
+    left:50%;
+}
+.site-books-new-details{
+    margin-top: 30px;
+}
+.new-a{
+    margin-top: 10px;
+    font-size: 26px;
+    font-weight: bold;
+    color: #7F7F7F;
+    text-align: center;
+}
+.books-new-1{
+    position: relative;
+    float:left;
+    left:8%;
+    border:1px solid #D7D7D7;
+    border-radius: 5px;
+}
+
+.books-new-2{
+    position: relative;
+    float:left;
+    left:8%;
+    border:1px solid #D7D7D7;
+    border-radius: 5px;
+}
+
+
+.books-new-3{
+    position: relative;
+    float:left;
+    left:8%;
+    border:1px solid #D7D7D7;
+    border-radius: 5px;
+}
+
+.books-new-4{
+    position: relative;
+    float:left;
+    left:8%;
+    border:1px solid #D7D7D7;
+    border-radius: 5px;
+}
+
+/*
+footer*/
+.bg-footer{
+    position: relative;
+    float:left;
+    background-color: #ffffff;
+    width: 100%;
+    height: 100px;
+}
+.footer-container{
+    position: relative;
+    top: 30px;
+    text-align: center;
+    font-size: 12px;
+}
+
+.footer-font-one{
+    color:#D7D7D7;
+}
+
+.footer-font-two{
+    color:#D7D7D7
+}
+
+.footer-font-three{
+    color:#D7D7D7
+}

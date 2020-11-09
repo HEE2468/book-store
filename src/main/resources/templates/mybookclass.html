@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>书籍分类表</title>
+    <link href="css/index/style.css" type="text/css" rel="stylesheet"/>
+    <link href="css/mybookclass/style.css" type="text/css" rel="stylesheet"/>
+    <link href="layui/css/layui.css" type="text/css" rel="stylesheet"/>
+    <link type="text/css" rel="stylesheet" href="css/bootstrap.css">
+    <link type="text/css" rel="stylesheet" href="css/style.css">
+    <script src="layui/layui.js" type="text/javascript"></script>
+    <script src="plugins/jquery/dist/jquery.min.js"></script>
+    <script src="js/car.js" type="text/javascript"></script>
+</head>
+
+<style>
+    .page-bar{
+        position: relative;
+        float: left;
+        width: 30%;
+        height: 40%;
+        left:40%;
+        display:inline-block !important;
+        display:inline;
+
+    }
+    ul,li{
+        margin: 0px;
+        padding: 0px;
+    }
+    li{
+        list-style: none
+    }
+    .page-bar li:first-child>a {
+        margin-left: 0px
+    }
+    .page-bar a{
+        border: 1px solid #ddd;
+        text-decoration: none;
+        position: relative;
+        float: left;
+        padding: 6px 12px;
+        margin-left: -1px;
+        line-height: 1.42857143;
+        color: black;
+        cursor: pointer
+    }
+    .page-bar a:hover{
+        background-color: #eee;
+    }
+    .page-bar a.banclick{
+        cursor:not-allowed;
+    }
+    .page-bar .active a{
+        color: #fff;
+        cursor: default;
+        background-color: #D70010;
+        border-color: #D70010;
+    }
+    .page-bar i{
+        font-style:normal;
+        color: black;
+        margin: 0px 4px;
+        font-size: 12px;
+    }
+    .paginate{
+        position: relative;
+        float: left;
+        width: 30%;
+        height: 40%;
+        left:40%;
+        display:inline-block !important;
+    }
+
+    .paginate .layui-laypage .layui-laypage-curr .layui-laypage-em{
+        background-color: #D70010;
+    }
+
+    .paginate .layui-laypage-btn{
+        background-color: #D70010;
+        color: #FFFFFF;
+    }
+
+
+
+    .paginate>.layui-laypage>a:hover{
+        color: #fff;
+        background-color: #D70010;
+        border-color: #D70010;
+    }
+
+</style>
+<body>
+
+<!-- 横幅 topbar -->
+<div class="site-topbar-v">
+    <div class="container-v">
+        <div class="container-topbar-title-v">
+            <a class="title-content" style="color: #ffffff;font-size: 12px">闲置书籍转借云服务平台</a>
+        </div>
+
+        <div class="container-topbar-userInfo">
+            <img src="images/index/u335.svg" style="width: 22px;height: 22px">
+            <div id="noLogin" class="userInfo-and">
+                <a class="login-v" href="login.html" style="color:#ffffff;font-size: 12px">登录</a>
+                <span class="split-content-v" style="color:#ffffff;font-size: 12px">|</span>
+                <a class="register-v" href="register.html" style="color:#ffffff;font-size: 12px">注册</a>
+            </div>
+            <div id="hasLogin" class="userInfo-and userInfo-has-login" style="display: none">
+                <li class="show_list">
+                    <span id="loginName" style="margin-left: -10px;color: #ffffff">shenwenwen</span>
+                    <ul class="move_list">
+                        <li id="center-nav">个人中心</li>
+                        <li id="order-nav">我的订单</li>
+                        <li id="out-nav">退出</li>
+                    </ul>
+                </li>
+            </div>
+        </div>
+
+        <div class="container-topbar-buttons">
+            <img src="images/index/topbar_btns.png" style="width: 30px;height: 25px">
+        </div>
+
+        <div class="container-topbar-messages">
+            <img src="images/index/systeminfos.png" style="width: 25px;height: 25px">
+            <a style="color:#ffffff;font-size: 12px;width: 25px;height: 25px;border-radius: 20px;background-color: #ff0000">20</a>
+        </div>
+
+        <!--购物车-->
+        <div class="container-topbar-car">
+            <a class="shopping_car" href="javascript:enterMyCar();">
+                <img src="images/index/car.png" style="width: 25px;height: 25px">
+                <span id="carNumber" style="color:#ffffff;font-size: 12px">购物车（0）</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- 首页导航栏 -->
+<div class="site-header">
+
+    <div class="site-logo">
+        <img class="header-logo" src="images/logo.png">
+    </div>
+
+    <div class="header-nav-v">
+        <ul class="nav-list-v">
+            <li class="li-item-index" id="item-index-nav">
+                <a style="color: #7F7F7F" href="index.html">首页</a>
+            </li>
+            <li class="li-item-all">
+                <a class="item-all" href="" style="color: #7F7F7F">全部图书</a>
+            </li>
+            <li class="li-item-new">
+                <a class="item-new" href="" style="color: #7F7F7F">最新上架</a>
+            </li>
+            <li class="li-item-hot">
+                <a class="item-hot" href="" style="color: #7F7F7F">最热畅销</a>
+            </li>
+            <li class="li-item-good">
+                <a class="item-good" href="" style="color: #7F7F7F">最佳推荐</a>
+            </li>
+            <li class="li-item-about">
+                <a class="item-about" href="" style="color: #7F7F7F">关于我们</a>
+            </li>
+            <li class="li-item-admin">
+                <a class="item-admin" href="admin_login.html" style="color: #7F7F7F">管理员登录</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="header-search" >
+        <input id="searchNavValue" type="text" placeholder="请输入..." name="" id="" value="" />
+        <button id="search-nav"><i>搜索</i></button>
+    </div>
+</div>
+
+<div id="main-page">
+    <!-- 书籍二级分类 -->
+    <div class="books-classes">
+        <!-- 排序 -->
+        <div class="books-classes-sort">
+        <span class="category-item selected ">
+            <span class="category-text">综合排序</span>
+        </span>
+            <span class="category-item">
+            <span class="category-text">最新上架</span>
+        </span>
+            <span class="category-item">
+            <span class="category-text">最热畅销</span>
+        </span>
+            <span class="category-item">
+            <span class="category-text">最佳推荐</span>
+        </span>
+            <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;"></fieldset>
+        </div>
+        <!-- 书籍二级分类 -->
+        <div  id="books-classes-category-vue" class="books-classes-category">
+        <span class="category-item selected ">
+            <span class="category-text">全部类别</span>
+        </span>
+            <span class="category-item" v-for="info in infos">
+            <span class="category-text" @click="recordBookClass(info.bookClassId)">{{ info.classes }}</span>
+        </span>
+            <fieldset class="layui-elem-field layui-field-title site-demo-button" style="margin-top: 30px;"></fieldset>
+        </div>
+        <!-- 资费 -->
+        <div class="books-classes-pay">
+        <span class="category-item selected ">
+            <span class="category-text">全部资费</span>
+        </span>
+            <span class="category-item">
+            <span class="category-text">免费</span>
+        </span>
+            <span class="category-item">
+            <span class="category-text">付费</span>
+        </span>
+        </div>
+    </div>
+
+    <!-- 书籍分类展示 -->
+    <div id="books-show-wrap" class="books-show-wrap">
+        <div class="books-show-v">
+            <dl class="col-wrap" v-for="pageInfo in pageShowInfos">
+                <dd>
+                    <a class="col-wrap-img" href="" target="_blank" @click="dumpBookDetails(pageInfo.bookDetailsId)"><img class="wrap-img" :src="pageInfo.image"></a>
+                </dd>
+                <dt><a class="wap-title" href="mybookdetails.html" >{{pageInfo.bookTitle}}</a><br/>
+                    <span class="wap-text-free" style="color: green"v-if="pageInfo.price == 0">免费</span>
+                    <span class="wap-text-free" style="color: red" v-else>{{ pageInfo.price }}</span>
+                </dt>
+            </dl>
+        </div>
+
+    </div>
+
+    <!--分页-->
+    <div class="page-bar">
+        <ul>
+            <li v-if="cur>1"><a v-on:click="cur--,pageClick(cur)">上一页</a></li>
+            <li v-if="cur==1"><a class="banclick">上一页</a></li>
+            <!--当前页背景色为蓝色-->
+            <li v-for="index in indexs"  v-bind:class="{ 'active': cur == index}">
+                <a v-on:click="btnClick(index)">{{ index }}</a>
+            </li>
+            <li v-if="cur<all"><a v-on:click="cur++,pageClick(cur)">下一页</a></li>
+            <li v-if="cur == all"><a class="banclick">下一页</a></li>
+            <li><a>共<i>{{all}}</i>页</a></li>
+        </ul>
+    </div>
+</div>
+
+
+<!-- 搜索分页 -->
+<div class="search-page" id="search-page"></div>
+<div class="paginate" id="pagination-layui"></div>
+
+<!-- footer -->
+<div id="footer" class="bg-footer">
+    <div class="footer-container">
+        <a class="footer-font-one">中信银行股份有限公司版权所有 Copyright © CITIC Bank All rights reserved</a><br/>
+    </div>
+</div>
+
+</body>
+<script src="js/jquery-1.12.4.min.js" type="text/javascript"></script>
+<script src="js/nav.js" type="text/javascript"></script>
+<script src="js/vue/vue.min.js" type="text/javascript"></script>
+<script src="js/axios.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    function enterMyCar() {
+        if(window.sessionStorage.getItem("userId")!="null"){
+            window.location.href = "mycar.html";
+        }
+    }
+
+</script>
+<script type="text/javascript">
+    var newVue = new Vue({
+        el: '#books-classes-category-vue',
+        data () {
+            return {
+                infos: null
+            }
+        },
+        mounted () {
+            // 显示二级分类
+            axios.post('book/findBookClass',{bookCategoryId: window.sessionStorage.getItem("bookCategoryId")})
+                .then(response => {
+                    this.infos = response.data.list;
+                    window.sessionStorage.setItem("bookClassId",this.infos[0].bookClassId);
+                    pageBar.pageStart();
+                })
+                .catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
+
+        },
+        methods:{
+            // 记录二级分类
+            recordBookClass:function (bookClassId) {
+                window.sessionStorage.setItem("bookClassId",bookClassId);
+                pageBar.pageStart();
+            }
+        }
+    })
+</script>
+
+
+<script type="text/javascript">
+    var pageBar = new Vue({
+        el: '.page-bar',
+        data: {
+            totalPages:1,
+            all: 8, //总页数
+            cur: 1,//当前页码
+            pageInfos:null
+        },
+        watch: {
+            cur: function(oldValue , newValue){
+                console.log(arguments);
+            }
+        },
+        methods: {
+            btnClick: function(data){
+                if(data != this.cur){
+                    this.cur = data;
+                    this.pageStart();
+                   // alert("cur: "+this.cur);
+                }
+            },
+            pageClick: function(data){
+                this.cur = data;
+                this.pageStart();
+            },
+            pageStart:function () {
+                axios.post('details/findBookDetails', {
+                        bookCategoryId: window.sessionStorage.getItem("bookCategoryId"),
+                        bookClassId: window.sessionStorage.getItem("bookClassId"),
+                        currentPage:this.cur
+                    })
+                    .then(response => {
+                            this.pageInfos = response.data.content;
+                            this.all = response.data.totalPages;
+                            pageShowBar.showBooks();
+                           //alert("all: "+this.all);
+                    })
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+            }
+        },
+        computed: {
+            indexs: function(){
+                var left = 1;
+                var right = this.all;
+                var ar = [];
+                if(this.all>= 5){
+                    //这里最大范围从3到6，如果到达7，那么下边加2变成9，已经超过最大的范围值
+                    if(this.cur > 3 && this.cur < this.all-1){
+                        //以4为参考基准，左面加2右边加2
+                        left = this.cur - 2
+                        right = this.cur + 2
+                    }else{
+                        if(this.cur<=3){
+                            left = 1
+                            right = 5
+                        }else{
+                            right = this.all
+                            left = this.all -4
+                        }
+                    }
+                }
+                while (left <= right){
+                    ar.push(left)
+                    left ++
+                }
+                console.log(ar);
+                return ar
+            }
+        }
+    })
+
+    var pageShowBar = new Vue({
+        el: '#books-show-wrap',
+        data: {
+            totalShowPages: pageBar.all,
+            cur: this.cur,//当前页码
+            pageShowInfos: null
+        },
+        methods:{
+            showBooks:function () {
+                this.pageShowInfos = pageBar.pageInfos;
+            },
+            dumpBookDetails:function (bookDetailsId) {
+                window.location.href = "mybookdetails.html?bookDetailsId="+bookDetailsId;
+            }
+        }
+    });
+
+</script>
+
+
+</html>

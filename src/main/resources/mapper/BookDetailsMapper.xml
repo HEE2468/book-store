@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sww.bank_book.books.dao.BookDetailsDao">
+
+    <resultMap id="bookDetailsMap" type="com.sww.bank_book.books.entity.BookDetails">
+        <id property="bookDetailsId" column="book_details_id"/>
+        <result property="bookClassId" column="book_class_id"/>
+        <result property="bookCategoryId" column="book_category_id"/>
+        <result property="bookName" column="book_name"/>
+        <result property="bookTitle" column="book_title"/>
+        <result property="bookDescription" column="book_description"/>
+        <result property="price" column="price"/>
+    </resultMap>
+
+    <select id="findBookDetails" resultMap="bookDetailsMap">
+        SELECT * FROM book_details WHERE book_category_id = #{bookCategoryId} AND book_class_id = #{bookClassId} LIMIT #{offset},#{page}
+    </select>
+
+    <select id="findBooksByIds" resultType="java.lang.Integer">
+        SELECT count(*) FROM book_details WHERE book_category_id = #{bookCategoryId} AND book_class_id = #{bookClassId}
+    </select>
+
+    <resultMap id="booksMap" type="com.sww.bank_book.books.entity.BookDetails">
+        <id property="bookDetailsId" column="book_details_id"/>
+        <result property="bookClassId" column="book_class_id"/>
+        <result property="bookCategoryId" column="book_category_id"/>
+        <result property="bookName" column="book_name"/>
+        <result property="bookTitle" column="book_title"/>
+        <result property="image" column="image"/>
+        <result property="bookDescription" column="book_description"/>
+        <result property="price" column="price"/>
+        <association property="bookCategory" column="book_category_id">
+            <id property="book_category_id" column="book_category_id"/>
+            <result property="category" column="category"/>
+        </association>
+        <association property="bookClass" column="book_class_id">
+            <id property="bookClassId" column="book_class_id"/>
+            <result property="classes" column="classes"/>
+        </association>
+    </resultMap>
+
+    <select id="findBooksById" resultMap="booksMap">
+        SELECT
+         *
+        FROM book_details AS bookDetails
+        LEFT JOIN book_category AS bookCategory ON bookCategory.book_category_id = bookDetails.book_category_id
+        LEFT JOIN book_class AS bookClass ON bookClass.book_class_id = bookDetails.book_class_id
+        WHERE bookDetails.book_details_id = #{bookDetailsId}
+    </select>
+
+    <select id="findBooksDetailsLike" resultType="com.sww.bank_book.books.entity.BookDetails">
+        SELECT
+        book_details_id AS bookDetailsId,
+        book_class_id As bookClassId,
+        book_category_id AS bookCategoryId,
+        book_name As bookName,
+        image,
+        book_title AS bookTitle,
+        book_description AS bookDescription,
+        price
+        FROM book_details
+        WHERE  book_name LIKE concat(concat('%',#{bookName}),'%') LIMIT #{offset},#{page}
+    </select>
+
+    <select id="countBooksDetailsLike" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM book_details WHERE  book_name LIKE concat(concat('%',#{bookName}),'%')
+    </select>
+
+</mapper>

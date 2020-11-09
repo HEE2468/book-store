@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sww.bank_book.books.dao.BookClassDao">
+
+    <resultMap id="bookClassMap" type="com.sww.bank_book.books.entity.BookClass">
+        <id property="bookClassId" column="book_class_id"/>
+        <result property="bookCategoryId" column="book_category_id"/>
+        <result property="classes" column="classes"/>
+    </resultMap>
+
+    <select id="findBookClass" resultMap="bookClassMap">
+        SELECT * FROM book_class WHERE book_category_id = #{bookCategoryId} ORDER BY book_class_id
+    </select>
+
+    <select id="findClassIdByOrder" resultMap="bookClassMap">
+        SELECT * FROM book_class WHERE book_category_id = #{bookCategoryId} ORDER BY book_class_id
+    </select>
+
+</mapper>

@@ -1,0 +1,176 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>支付</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link type="text/css" rel="stylesheet" href="css/bootstrap.css">
+    <link type="text/css" rel="stylesheet" href="css/style.css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="layer/layer.js"></script>
+    <script type="text/javascript" src="js/cart.js"></script>
+    <link href="css/mycenter/style.css" type="text/css" rel="stylesheet"/>
+    <link href="layui/css/layui.css" type="text/css" rel="stylesheet"/>
+    <script src="layui/layui.js" type="text/javascript"></script>
+    <script src="plugins/jquery/dist/jquery.min.js"></script>
+</head>
+<body>
+
+<!-- header -->
+<div class="site-header">
+    <div class="site-logo">
+        <img class="header-logo" src="images/logo.png">
+    </div>
+    <div class="header-nav">
+        <ul class="nav-list">
+            <li class="li-item-center">
+                <a class="item-center" href="">确认订单</a>
+            </li>
+            <li class="li-item-logout">
+                <a class="item-logout" onclick="logout()">退出</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<div class="cart-items" id="carts-vue">
+    <div class="container">
+        <h2>确认收货信息</h2>
+        <form class="form-horizontal" action="pay.action" method="post" id="payform">
+            <input type="hidden" name="order.id" value="4">
+            <input type="hidden" name="order.paytype" id="paytype">
+            <div class="row">
+                <label class="control-label col-md-1">收货人</label>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" v-model="info.deliveryName" value="" style="height:auto;padding:10px;" placeholder="输入收货人" required="required"><br>
+                </div>
+            </div>
+            <div class="row">
+                <label class="control-label col-md-1">收货电话</label>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" v-model="info.telephone" value="" style="height:auto;padding:10px;" placeholder="输入收货电话" required="required"><br>
+                </div>
+            </div>
+            <div class="row">
+                <label class="control-label col-md-1">收货地址</label>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" v-model="info.address" value="" style="height:auto;padding:10px;" placeholder="输入收货地址" required="required"><br>
+                </div>
+            </div>
+        </form>
+
+        <br><hr><br>
+
+        <h2>选择支付方式</h2>
+        <h3>订单编号: 4  支付金额: 757</h3><br><br>
+        <div class="col-sm-6 col-md-4 col-lg-3 ">
+            <div class="thumbnail">
+                <a href="javascript:dopay(1);">
+                    <img src="images/wechat.jpg" alt="微信支付">
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-3 ">
+            <div class="thumbnail">
+                <a href="javascript:dopay(2);">
+                    <img src="images/alipay.jpg" alt="支付宝支付">
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-4 col-lg-3 ">
+            <div class="thumbnail">
+                <a href="javascript:dopay(3);">
+                    <img src="images/offline.jpg" alt="货到付款">
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <br><hr><br>
+
+    <div class="register-but text-center">
+       <!-- <input type="button" value="提交"  @click="register()" >-->
+        <input type="button" value="提交订单" @click="submitOrder()" >
+        <div class="clearfix"> </div>
+    </div>
+</div>
+
+
+
+
+<!--footer-->
+<div class="footer">
+    <div class="container">
+        <div class="text-center">
+            <p>中信银行股份有限公司版权所有 Copyright © CITIC Bank All rights reserved</p>
+        </div>
+    </div>
+</div>
+<!--//footer-->
+
+
+</body>
+<script src="js/logout.js" type="text/javascript"></script>
+<script src="js/jquery-1.12.4.min.js" type="text/javascript"></script>
+<script src="js/vue/vue.min.js" type="text/javascript"></script>
+<script src="js/axios.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+    // 获取支付方式
+    function dopay(paytype){
+        msg.info.payType = paytype;
+    }
+
+    let msg = new Vue({
+        el: '#carts-vue',
+        data:{
+            info:{
+                deliveryName:'',
+                telephone:'',
+                address:'',
+                payType:1
+            }
+        },
+        mounted () {
+
+            // 查询收货人信息
+            axios.post('center/findUserInfos',{
+                userId: window.sessionStorage.getItem("userId")
+            })
+                .then(response=>{
+                    this.info = response.data.data;
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
+
+        },
+        methods:{
+            submitOrder:function () {
+                axios.post('order/insertUserOrderBatch',{
+                    userId: window.sessionStorage.getItem("userId"),
+                    deliveryName:this.info.deliveryName,
+                    telephone:this.info.telephone,
+                    address:this.info.address,
+                    payType:this.info.payType
+                })
+                    .then(response=>{
+                        this.infoMsg = response.data;
+                       // alert("info:"+ this.infoMsg);
+                         if(this.infoMsg != -1){
+                             window.location.href = 'paysuccessfully.html';
+                         }
+                    })
+                    .catch(function (error) {
+                        console.log(error)
+                    })
+            }
+        }
+    })
+
+</script>
+</html>

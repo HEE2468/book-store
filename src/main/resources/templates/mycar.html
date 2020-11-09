@@ -1,0 +1,224 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>购物车</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link type="text/css" rel="stylesheet" href="css/bootstrap.css">
+    <link type="text/css" rel="stylesheet" href="css/style.css">
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="layer/layer.js"></script>
+    <link href="css/mycenter/style.css" type="text/css" rel="stylesheet"/>
+    <link href="layui/css/layui.css" type="text/css" rel="stylesheet"/>
+    <script src="layui/layui.js" type="text/javascript"></script>
+    <script src="plugins/jquery/dist/jquery.min.js"></script>
+</head>
+
+<style>
+    body .deleteSkin .layui-layer-btn0{
+        border-color: #5bc0de;
+        background-color: #5bc0de;
+        color: #fff;
+    }
+    body .deleteSkin .layui-layer-btn1{
+        border-color: #5bc0de;
+        background-color: #5bc0de;
+        color: #fff;
+    }
+</style>
+
+<body>
+
+
+
+<!-- header -->
+<div class="site-header">
+    <div class="site-logo">
+        <img class="header-logo" src="images/logo.png">
+    </div>
+    <div class="header-nav">
+        <ul class="nav-list">
+            <li class="li-item-center">
+                <a class="item-center">我的购物车</a>
+            </li>
+            <li class="li-item-logout">
+                <a class="item-logout" onclick="logout()">退出</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!--cart-items-->
+<div class="cart-items">
+    <div class="container">
+        <h2>我的购物车</h2>
+
+        <div class="cart-header col-md-6" v-for="car in info">
+            <div class="cart-sec simpleCart_shelfItem">
+                <div class="cart-item cyc">
+                    <span @click="jumpDetailsBook(car.bookDetailsId)">
+                        <img :src="car.image" class="img-responsive">
+                    </span>
+                </div>
+                <div class="cart-item-info">
+                    <h3><a>{{car.bookName}}</a></h3>
+                    <h3><span>单价: ¥ {{car.price}}</span></h3>
+                    <h3><span>数量: {{car.number}}</span></h3>
+                    <a class="btn btn-info"  @click="addBook(car.bookCarId)">增加</a>
+                    <a class="btn btn-warning"  @click="lessenBook(car.bookCarId)">减少</a>
+                    <a class="btn btn-danger"  @click="deleteBook(car.bookCarId)">删除</a>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+
+        <div class="cart-header col-md-12">
+            <hr>
+            <h3>订单总金额: ¥ {{totalPrice}}</h3>
+            <a class="btn btn-success btn-lg" style="margin-left:74%" href="mypay.html">下一步</a>
+        </div>
+
+
+
+    </div>
+</div>
+<!--//cart-items-->
+
+
+
+<!--footer-->
+<div class="footer">
+    <div class="container">
+        <div class="text-center">
+            <p>中信银行股份有限公司版权所有 Copyright © CITIC Bank All rights reserve</p>
+        </div>
+    </div>
+</div>
+<!--//footer-->
+
+</body>
+<script src="js/logout.js" type="text/javascript"></script>
+<script src="plugins/jquery/dist/jquery.min.js"></script>
+<script src="js/jquery-1.12.4.min.js" type="text/javascript"></script>
+<script src="js/vue/vue.min.js" type="text/javascript"></script>
+<script src="js/axios.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    new Vue({
+        el:'.cart-items',
+        data:{
+            info:{
+                bookCarId:'',
+                bookName:'' ,
+                bookTitle:'',
+                price:'',
+                number:1
+            },
+            totalPrice:0.0
+        },
+        mounted() {
+            axios.post('car/findBookCarById',{userId: window.sessionStorage.getItem("userId")})
+                .then(response=>{
+                    this.info = response.data.list;
+                    for(let i of this.info){
+                        this.totalPrice += i.price;
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error)
+                })
+        },
+        methods:{
+            jumpDetailsBook:function (bookDetailsId) {
+                window.location.href = "mybookdetails.html?bookDetailsId="+bookDetailsId;
+            },
+
+            // 增加购物车中的书籍
+            addBook:function (bookCarId) {
+                $.ajax({
+                    type:"post",
+                    url:"car/addBook",
+                    contentType: "application/x-www-form-urlencoded",
+                    data : {
+                        bookCarId : bookCarId
+                    },
+                    datatype: "json",
+                    success:function(result){
+                        if(result.code !== -1){
+                            this.number ++ ;
+                            window.location.reload();
+                        }else{
+                            alert("操作有误，请重试!")
+                        }
+                    },
+                    error: function(){
+                        //请求出错处理
+                        alert("出错了，请与管理员联系");
+                    }
+                });
+            },
+
+            // 减少购物车中的书籍
+            lessenBook:function (bookCarId) {
+                $.ajax({
+                    type:"post",
+                    url:"car/lessenBook",
+                    data : {
+                        bookCarId : bookCarId
+                    },
+                    contentType: "application/x-www-form-urlencoded",
+                    datatype: "json",
+                    success:function(result){
+                        if(result.code !== -1){
+                            this.number -- ;
+                            window.location.reload();
+                            if(this.info.number <= 0){
+                                this.deleteBook(bookCarId);
+                            }
+                        }else{
+                            alert("操作有误，请重试!")
+                        }
+                    },
+                    error: function(){
+                        //请求出错处理
+                        alert("出错了，请与管理员联系");
+                    }
+                });
+            },
+
+            // 删除购物车中的书籍
+            deleteBook:function (bookCarId) {
+                layer.confirm('您确定要删除该书籍吗?',{
+                    btn: ['确定', '取消'],
+                    title:"提示",
+                    skin: 'deleteSkin'
+
+                }, function() {
+                    $.ajax({
+                        type: "post",
+                        url: "car/deleteBook",
+                        data: {
+                            bookCarId: bookCarId
+                        },
+                        contentType: "application/x-www-form-urlencoded",
+                        datatype: "json",
+                        success: function (result) {
+
+                            if (result.code !== -1) {
+                                layer.msg('删除成功', {icon: 1});
+                                window.location.reload();
+                            }
+                        },
+                        error: function () {
+                            //请求出错处理
+                            alert("出错了，请与管理员联系");
+                        }
+                    });
+                });
+            }
+        }
+    })
+</script>
+</html>

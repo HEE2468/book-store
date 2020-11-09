@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sww.bank_book.order.dao.BookOrderDao">
+
+    <resultMap id="BookOrderMap" type="com.sww.bank_book.order.entity.BookOrder">
+        <id property="bookOrderId" column="book_order_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="bookDetailsId" column="book_details_id"/>
+        <result property="orderNumber" column="order_number"/>
+        <result property="orderType" column="order_type"/>
+        <result property="payType" column="pay_type"/>
+        <result property="orderDate" column="book_order_date"/>
+        <result property="amount" column="amount"/>
+        <result property="bookName" column="book_name"/>
+        <result property="bookDetailsImg" column="image"/>
+        <result property="bookDescription" column="book_description"/>
+        <result property="deliveryName" column="delivery_name"/>
+        <result property="telephone" column="telephone"/>
+        <result property="address" column="address"/>
+    </resultMap>
+
+    <!-- 订单查询，个人中心->我的订单 -->
+    <select id="findBookOrderById" resultMap="BookOrderMap">
+        SELECT
+        *
+        FROM book_order AS bookOrder
+        LEFT JOIN book_details AS bookDetails ON bookDetails.book_details_id = bookOrder.book_details_id
+        LEFT JOIN user AS bookUser ON bookUser.id = bookOrder.user_id
+        WHERE bookOrder.user_id = #{userId}
+        LIMIT #{page},#{limit}
+    </select>
+
+    <!--分页查询，总记录数-->
+    <select id="findPageOrderById" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM book_order  WHERE user_id = #{userId}
+    </select>
+
+    <!-- 提交订单,单条记录 -->
+    <insert id="insertUserOrder" parameterType="com.sww.bank_book.order.entity.BookOrder">
+        INSERT INTO user(
+        <trim suffixOverrides=",">
+            book_order_id,
+            user_id,
+            book_details_id,
+            book_order_date,
+            order_type,
+            pay_type,
+            order_number,
+            amount
+        </trim>
+        )
+        VALUES (
+        <trim suffixOverrides=",">
+            #{bookOrderId},
+            #{userId},
+            #{bookDetailsId},
+            #{orderDate},
+            #{orderType},
+            #{payType},
+            #{orderNumber},
+            #{amount}
+        </trim>
+        )
+    </insert>
+
+
+    <!-- 提交订单,批量提交 -->
+    <insert id="insertUserOrderBatch" parameterType="java.util.List">
+        INSERT INTO book_order(
+        <trim suffixOverrides=",">
+            book_order_id,
+            user_id,
+            book_details_id,
+            book_order_date,
+            order_type,
+            pay_type,
+            order_number,
+            amount
+        </trim>
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator="," >
+            (<trim suffixOverrides=",">
+                #{item.bookOrderId},
+                #{item.userId},
+                #{item.bookDetailsId},
+                #{item.orderDate},
+                #{item.orderType},
+                #{item.payType},
+                #{item.orderNumber},
+                #{item.amount},
+            </trim>)
+        </foreach>
+    </insert>
+
+    <!-- 修改收货人信息 -->
+    <update id="updateUserAddress" parameterType="com.sww.bank_book.order.entity.BookOrder">
+        UPDATE user SET
+        <trim suffixOverrides=",">
+            <if test="deliveryName != null">delivery_name = #{deliveryName},</if>
+            <if test="telephone != null">telephone = #{telephone},</if>
+            <if test="address != null">address = #{address},</if>
+        </trim>
+        <if test="userId != null">
+            WHERE id = #{userId}
+        </if>
+    </update>
+</mapper>

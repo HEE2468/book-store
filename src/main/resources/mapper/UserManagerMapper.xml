@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sww.bank_book.center.dao.UserManagerDao">
+
+
+    <select id="findUserInfos" resultType="com.sww.bank_book.center.entity.UserManager">
+        SELECT
+        id AS userId,
+        username,
+        img AS userPhoto,
+        sex,
+        delivery_name AS deliveryName,
+        telephone,
+        address
+        FROM user
+        WHERE id = #{userId}
+    </select>
+
+    <select id="findUserPasswordById" resultType="com.sww.bank_book.center.entity.UserManager">
+        SELECT password AS oldPassword FROM user WHERE id = #{userId}
+    </select>
+
+
+    <!-- 修改 -->
+    <update id="updateUserInfos" parameterType="com.sww.bank_book.center.entity.UserManager">
+        UPDATE user SET
+        <trim suffixOverrides=",">
+            <if test="userName != null and userName != '' ">username = #{userName},</if>
+            <if test="newPassword != null and newPassword != ''">password = #{newPassword},</if>
+            <if test="userPhoto !=null">img = #{userPhoto},</if>
+            <if test="deliveryName != null">delivery_name = #{deliveryName},</if>
+            <if test="telephone != null">telephone = #{telephone},</if>
+            <if test="address != null">address = #{address},</if>
+        </trim>
+        <if test="userId != null">
+            WHERE id = #{userId}
+        </if>
+    </update>
+
+</mapper>
